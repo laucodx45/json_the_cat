@@ -7,7 +7,7 @@ const url = `https://api.thecatapi.com/v1/breeds/search?q=${breed}`;
 request(url, function(error, response, body) {
   
   if (error) {
-    console.error('error: invalid breedName', error);
+    console.error('error: ', error);
     process.exit(1);
   }
 
