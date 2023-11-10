@@ -1,23 +1,25 @@
 const request = require('request');
 
-const breed = process.argv.slice(2);
-
-const url = `https://api.thecatapi.com/v1/breeds/search?q=${breed}`;
-
-request(url, function(error, response, body) {
+const fetchBreedDescription = function(breedName, callback) {
   
-  if (error) {
-    console.error('error: ', error);
-    process.exit(1);
-  }
+  const url = `https://api.thecatapi.com/v1/breeds/search?q=${breedName}`;
 
-  const data = JSON.parse(body);
-
-  if (data.length === 0) {
-    console.error('Invalid breedName');
-    process.exit(1);
-  }
-
-  console.log(data[0].description);
+  request(url, function(error, response, body) {
   
-});
+    if (!error) {
+      const data = JSON.parse(body);
+      
+      // data is not empty then callback
+      if (data.length !== 0) {
+        callback(null, data[0].description);
+      } else {
+        callback('Invalid Cat Breed Name');
+      }
+    } else {
+      callback(error);
+    }
+  });
+
+};
+
+module.exports = {fetchBreedDescription};
